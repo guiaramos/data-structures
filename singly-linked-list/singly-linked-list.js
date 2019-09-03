@@ -1,3 +1,13 @@
+/**
+ *! Big O of Singly Linked List
+ *
+ * Insertion = O(1)
+ * Removal = O(1) or O(n)
+ * Searching = O(n)
+ * Access = O(n)
+ *
+ */
+
 class Node {
   constructor(val) {
     // Receives the data
@@ -150,11 +160,91 @@ class SinglyLinkedList {
     // 4_ Return the changed item
     return item;
   }
+
+  /*****  Adds a node to the Linked List at a specific position  *****/
+
+  insert(index, val) {
+    // 1_ IF the index is less than zero or greater than the length, return false
+    if (index < 0 || index > this.length) return false;
+
+    // 2_ IF the index is the same as the length, push a new node to the end of the list
+    if (index === this.length) return this.push(val);
+
+    // 3_ IF the index is 0, unshift a new node to the start of the list
+    if (index === 0) return !!this.unshift(val);
+
+    // 4_ Otherwise, using the get method, access the node at the index -1
+    let newNode = new Node(val);
+    let prev = this.get(index - 1);
+    let temp = prev.next;
+
+    // 5_ Set the property next that node to be the new node
+    prev.next = newNode;
+
+    // 6_ set the next property on the new node to be the previous next
+    newNode.next = temp;
+
+    // 7_ Increment the length
+    this.length++;
+
+    // 8_ Return true
+    return true;
+  }
+
+  /*****  Removes a node from the linked list at a specific position  *****/
+  remove(index) {
+    // 1_ IF the index is less than zero or greater than the length, return undefined
+    if (index < 0 || index > this.length) return undefined;
+
+    // 2_ IF the index is the same as the length -1 , pop
+    if (index === this.length - 1) return this.pop();
+
+    // 3_ If the index is 0, shift
+    if (index === 0) return this.shift();
+
+    // 4_ Otherwise using the get method, access the node at the index -1
+    let prevNode = this.get(index - 1);
+    let removedNode = this.get(index);
+
+    // 5_ Set the next property on that node to be the next of the next node
+    prevNode.next = removedNode.next;
+
+    // 6_ Decrement the length
+    this.length--;
+
+    // 7_ Return the value of the node removed
+    return removedNode;
+  }
+
+  /*****  Reverses the Linked List in place  *****/
+  reverse() {
+    // 4_ Create a variable for node and initialize it to the head property
+    let node = this.head;
+    // 1_ Swap the head and tail
+    this.head = this.tail;
+    this.tail = node;
+    // 2_ Create a variable for next
+    let next = null;
+    // 3_ Create a variable for previous
+    let prev = null;
+    // 5_ Loop through the list
+    for (let i = 0; i < this.length; i++) {
+      // 6_ Set next to be the next property on whatever node is
+      next = node.next;
+      // 7_ Set the next property on the node to be whatever prev is
+      node.next = prev;
+      // 8_ Set prev to be the value of the node variable
+      prev = node;
+      // 9_ Set the node variable to be the value of the next variable
+      node = next;
+    }
+    return this;
+  }
 }
 
 const list = new SinglyLinkedList();
 list.push("HI");
-list.push("THER");
+list.push("THERE");
 list.push("HOW");
 list.push("ARE");
 list.push("YOU");
@@ -162,5 +252,5 @@ list.push("DOING");
 
 // console.log(list.get(0));
 console.log(list);
-console.log(list.set(1, "THERE"));
+console.log(list.insert(8, "FIRST"));
 console.log(list);
